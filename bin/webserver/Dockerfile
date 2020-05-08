@@ -84,3 +84,11 @@ RUN docker-php-ext-install -j$(nproc) gd
 
 # Enable apache modules
 RUN a2enmod rewrite headers
+
+# Install cron
+RUN apt-get install cron
+ADD crontab /etc/cron.d/hello-cron
+RUN chmod 0644 /etc/cron.d/hello-cron
+RUN crontab /etc/cron.d/hello-cron
+RUN touch /var/log/cron.log
+CMD cron && tail -f /var/log/cron.log
