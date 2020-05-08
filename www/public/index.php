@@ -37,6 +37,17 @@ $app = require rtrim($paths->systemDirectory, '/ ') . '/bootstrap.php';
 
 /*
  *---------------------------------------------------------------
+ * SMALL AMOUNT OF PRE LAUNCH CUSTOMISATION
+ *---------------------------------------------------------------
+ */
+
+// allow ddd() to be used throughout application if not production
+if(ENVIRONMENT == 'development'){
+	helper('enhanced_dump');
+}
+
+/*
+ *---------------------------------------------------------------
  * LAUNCH THE APPLICATION
  *---------------------------------------------------------------
  * Now that everything is setup, it's time to actually fire
