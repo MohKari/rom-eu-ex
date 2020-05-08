@@ -1,0 +1,157 @@
+
+<style>
+    
+.display_name{
+    text-transform: capitalize;
+}
+
+.price{
+    text-align:right;
+}
+
+</style>
+
+<!-- Include JQuery -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+<!-- Include datatables -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">  
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+
+<!-- main table -->
+<table id="main">
+    <thead>
+        <tr>
+            <td>Name</td>
+            <td>Price</td>
+            <td>Volume</td>
+            <td>Accurate As</td>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<script>
+    
+    // api call to get all blueprints
+    $.ajax({
+        url: "https://api-europe.poporing.life/get_all_latest_prices?includeCategory=:type_blueprint_all&mini=0",
+        // data: data,
+        success: function(data){
+
+            // if poporing says call is sucessfull...
+            if(data.success == true){
+
+                processData(data.data);
+
+                $(document).ready( function () {
+                    $('#main').DataTable();
+                } );
+            }else{
+
+                $("#main").html("something went wrong...");
+            }
+
+        }
+        // dataType: dataType
+    });
+
+    var want = [];
+
+    // data shoould be an
+    function processData(data){
+
+        console.log(data);
+        
+        var now = Date.now();
+
+        for (i = 0; i < data.length; i++) {
+
+            var html = "";
+
+            var item = data[i];
+
+            if(item.data.price == 0){
+                continue;
+            }
+
+            // name of item
+            var name = item['item_name'];
+            var display_name = name.replace(/_/g, " ");
+
+            var age = item.data.timestamp;
+            var last_updated = timeConverter(age);
+
+            html += "<tr>";
+            html += "<td class='display_name'>"+display_name+"</td>";
+            html += "<td class='price'>"+item.data.price+"</td>";
+            html += "<td>"+item.data.volume+"</td>";
+            html += "<td>"+last_updated+"</td>";
+            html += "</tr>";
+
+            $("#main tbody").append(html);
+            
+            want.push([
+                display_name, item.data.price, item.data.volume, last_updated
+            ]);
+
+        }
+
+    }
+
+    // convert unix to date time
+    function timeConverter(UNIX_timestamp){
+        var a = new Date(UNIX_timestamp * 1000);
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        var year = a.getFullYear();
+        var month = months[a.getMonth()];
+        var date = a.getDate();
+        var hour = a.getHours();
+        var min = a.getMinutes();
+        var sec = a.getSeconds();
+        var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+        return time;
+    }
+
+
+    // get the difference between start time and end time, expressed as human readable
+    function timeDiff( tstart, tend ) {
+      var diff = Math.floor((tend - tstart) / 1000), units = [
+        { d: 60, l: "seconds" },
+        { d: 60, l: "minutes" },
+        { d: 24, l: "hours" },
+        { d: 7, l: "days" }
+      ];
+
+      var s = '';
+      for (var i = 0; i < units.length; ++i) {
+        s = (diff % units[i].d) + " " + units[i].l + " " + s;
+        diff = Math.floor(diff / units[i].d);
+      }
+
+      return s;
+
+    }
+
+function download_csv() {
+    
+    var csv = 'name, price, voluem, accurate as of\n';
+
+    want.forEach(function(row) {
+            csv += row.join(',');
+            csv += "\n";
+    });
+ 
+    console.log(csv);
+
+    var hiddenElement = document.createElement('a');
+    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+    hiddenElement.target = '_blank';
+    hiddenElement.download = 'people.csv';
+    hiddenElement.click();
+}
+
+</script>
+ 
+<button onclick="download_csv()">Download CSV</button> 
