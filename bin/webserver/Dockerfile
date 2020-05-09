@@ -25,7 +25,7 @@ RUN apt-get -y update --fix-missing
 RUN apt-get upgrade -y
 
 # Install useful tools
-RUN apt-get -y install apt-utils nano wget dialog
+RUN apt-get -y install apt-utils vim wget dialog
 
 # Install important libraries
 RUN apt-get -y install --fix-missing apt-utils build-essential git curl libcurl4 libcurl3-dev zip openssl
@@ -86,9 +86,4 @@ RUN docker-php-ext-install -j$(nproc) gd
 RUN a2enmod rewrite headers
 
 # Install cron
-RUN apt-get install cron
-ADD crontab /etc/cron.d/hello-cron
-RUN chmod 0644 /etc/cron.d/hello-cron
-RUN crontab /etc/cron.d/hello-cron
-RUN touch /var/log/cron.log
-CMD cron && tail -f /var/log/cron.log
+RUN apt-get -y install cron
