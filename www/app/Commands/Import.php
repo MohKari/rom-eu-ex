@@ -3,7 +3,7 @@
 namespace App\Commands;
 
 use App\Models\CronJobLog;
-use App\Models\Item;
+use App\Models\Items;
 use App\Models\StocksAndPrices;
 use App\Services\InternalAPICallService;
 use CodeIgniter\CLI\BaseCommand;
@@ -106,7 +106,7 @@ class Import extends BaseCommand
             }else{
 
                 // get all existing items
-                $model = new Item();
+                $model = new Items();
                 $this->existing_items = $model->findAll();
 
                 // loop through data that we just got from API call

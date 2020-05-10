@@ -9,7 +9,7 @@ use CodeIgniter\Model;
  * TransactionLog Model.
  * @todo Write unit test.
  */
-class Item extends Model
+class Items extends Model
 {
 
 	// table name and primary key
