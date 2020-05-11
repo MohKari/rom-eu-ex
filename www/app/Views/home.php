@@ -35,9 +35,8 @@
 			        <tr>
 			            <th>Name</th>
 			            <th>Price</th>
-			            <th>Known Lowest</th>
 			            <th>Stock</th>
-			            <th>Last Known</th>
+			            <th>Accurate As Of (UTC)</th>
 			        </tr>
 			    </thead>
 			    <tbody>
@@ -63,7 +62,6 @@
 								<tr>	
 									<td><a href="<?= $item['link'] ?>" target="_blank"><i class="fas fa-external-link-alt"></i></a> <?= $item['name'] ?></td>
 									<td class='text-right'><?= $item['price'] ?></td>
-									<td class='text-right'><?= $item['lowest_price'] ?></td>
 									<td class='text-right'><?= $item['stock'] ?></td>
 									<td class='text-right date-time'><?= $item['accurate'] ?></td>
 								</tr>
@@ -76,7 +74,6 @@
 								<tr class='text-danger font-weight-bold'>
 									<td><a href="<?= $item['link'] ?>" target="_blank"><i class="fas fa-external-link-alt"></i></a> <?= $item['name'] ?></td>
 									<td class='text-right'><?= $item['r_price'] ?></td>
-									<td class='text-right'><?= $item['lowest_price'] ?></td>
 									<td class='text-right'><?= $item['r_stock'] ?></td>
 									<td class='text-right date-time'><?= $item['r_accurate'] ?></td>
 								</tr>
@@ -108,44 +105,17 @@
         });
     } );
 
-	$('.date-time').each(function( index ) {
+	// $('.date-time').each(function( index ) {
+	// 	var current = $(this).text();
 
-		var now = new Date();
+	// 	var date = new Date(current+' UTC');
+	// 	// console.log(date)
+	// 	// var new_ = convertUTCDateToLocalDate(current);
+ //  		// console.log(new_);
+	// });
 
-		// get current time that is put into field
-		var current = $(this).text();
-
-		// convert to date object, let date object know its a UTC timestamp
-		var date = new Date(current+' UTC');
-
-		// outputs 10/05/2020, 21:57:08
-		var string = date.toLocaleString();
-
-		var seconds = (now - date) / 1000
-
-		// var dhms = secondsToDhms(seconds);
-
-		$(this).html(string);
-		// $(this).html(seconds);
-		// $(this).html(dhms);
-
-	});
-
-	// convert seconds into days, hours, minutes, seconds
-	function secondsToDhms(seconds) {
-
-		seconds = Number(seconds);
-		var d = Math.floor(seconds / (3600*24));
-		var h = Math.floor(seconds % (3600*24) / 3600);
-		var m = Math.floor(seconds % 3600 / 60);
-		var s = Math.floor(seconds % 60);
-
-		var dDisplay = d > 0 ? d + (d == 1 ? "d" : "d") : "";
-		var hDisplay = h > 0 ? h + (h == 1 ? "h" : "h") : "";
-		var mDisplay = m > 0 ? m + (m == 1 ? "m" : "m") : "";
-		var sDisplay = s > 0 ? s + (s == 1 ? "s" : "s") : "";
-		return dDisplay + hDisplay + mDisplay + sDisplay;
-
-	}
-
+	// function convertUTCDateToLocalDate(date) {
+	//     var newDate = new Date(date.getTime() - date.getTimezoneOffset()*60*1000);
+	//     return newDate;   
+	// }
 </script>

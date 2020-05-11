@@ -15,8 +15,8 @@ class CreateStocksAndPricesTable extends Migration
         // add table fields
         $this->forge->addField([
         	'item_id'            		=> ['type' => 'INT', 'constraint' => 9],
-            'price'                     => ['type' => 'VARCHAR', 'constraint' => 255],
-            'stock'                     => ['type' => 'VARCHAR', 'constraint' => 255],
+            'price'                     => ['type' => 'INT', 'constraint' => 15],
+            'stock'                     => ['type' => 'INT', 'constraint' => 9],
             'accurate_at'               => ['type' => 'DATETIME'],
             // add created_at and updated_at, they seem to get populated via the model?
             'created_at'                => ['type' => 'DATETIME'],
