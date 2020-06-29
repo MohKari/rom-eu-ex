@@ -14,7 +14,7 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>
 
 	<!-- Include datatables -->
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">  
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
 	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
 
 	<!-- Font Awesome -->
@@ -34,50 +34,25 @@
 			    <thead>
 			        <tr>
 			            <th>Name</th>
-			            <th>Id</th>
 			            <th>Price</th>
-			            <th>Known Lowest</th>
-			            <th>Known Lowest At</th>
-			            <th>Known Highest</th>
-			            <th>Known Highest At</th>
 			            <th>Stock</th>
-			            <th>Last Known</th>
+			            <th>Accurate At (UTC?)</th>
 			        </tr>
 			    </thead>
 			    <tbody>
-			    	
+
 		    		<?php
 
 		    			// loop through all items...
-						foreach($items as $item){
-
-							// if item has NEVER had stock, ignore it
-							if($item['r_stock'] == null || $item['r_stock'] == 0){
-								continue;
-							}
-
-							// if item price is not 0, display current data
-							if($item['price'] != 0){
-
-								echo "<tr>";
-							// else display most recent data that had values
-							}else{
-
-								echo "<tr class='text-danger font-weight-bold'>";	
-
-							}						
+						foreach($cards as $item){
 
 							?>
 
+								<tr>
 									<td><a href="<?= $item['link'] ?>" target="_blank"><i class="fas fa-external-link-alt"></i></a> <?= $item['name'] ?></td>
-									<td class='text-right'><?= $item['id'] ?></td>
-									<td class='text-right'><?= $item['r_price'] ?></td>
-									<td class='text-right'><?= $item['lowest_price'] ?></td>
-									<td class='text-right date-time'><?= $item['lowest_price_at'] ?></td>
-									<td class='text-right'><?= $item['highest_price'] ?></td>
-									<td class='text-right date-time'><?= $item['highest_price_at'] ?></td>
-									<td class='text-right'><?= $item['r_stock'] ?></td>
-									<td class='text-right date-time'><?= $item['r_accurate'] ?></td>
+									<td class='text-right'><?= $item['price'] ?></td>
+									<td class='text-right'><?= $item['volume'] ?></td>
+									<td class='text-right'><?= $item['accurate_at'] ?></td>
 								</tr>
 
 							<?php
@@ -88,7 +63,7 @@
 
 			    </tbody>
 			</table>
-		
+
 		</div>
 
 	</div>
@@ -98,7 +73,7 @@
 </html>
 
 <script>
-	
+
 	$(document).ready( function () {
         $('#main').DataTable({
         	"iDisplayLength" : 50,

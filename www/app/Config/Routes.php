@@ -33,6 +33,11 @@ $routes->setAutoRoute(true);
 $routes->get('/', 'Home::index');
 
 $routes->get('/dev', 'Dev::index');
+$routes->get('/cards/white', 'Cards::white');
+$routes->get('/cards/blue', 'Cards::blue');
+$routes->get('/cards/green', 'Cards::green');
+$routes->get('/cards/purple', 'Cards::purple');
+$routes->get('/test', 'Test::index');
 /**
  * --------------------------------------------------------------------
  * Additional Routing

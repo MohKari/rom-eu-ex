@@ -34,18 +34,13 @@
 			    <thead>
 			        <tr>
 			            <th>Name</th>
-			            <th>Id</th>
 			            <th>Price</th>
 			            <th>Known Lowest</th>
-			            <th>Known Lowest At</th>
-			            <th>Known Highest</th>
-			            <th>Known Highest At</th>
 			            <th>Stock</th>
 			            <th>Last Known</th>
 			        </tr>
 			    </thead>
 			    <tbody>
-			    	
 		    		<?php
 
 		    			// loop through all items...
@@ -56,36 +51,43 @@
 								continue;
 							}
 
-							// if item price is not 0, display current data
-							if($item['price'] != 0){
+							// start to create some table rows
+							?>
+				
 
-								echo "<tr>";
-							// else display most recent data that had values
-							}else{
-
-								echo "<tr class='text-danger font-weight-bold'>";	
-
-							}						
-
+							<?php 
+								// if item price is not 0, display current data
+								if($item['price'] != 0){
 							?>
 
+								<tr>	
 									<td><a href="<?= $item['link'] ?>" target="_blank"><i class="fas fa-external-link-alt"></i></a> <?= $item['name'] ?></td>
-									<td class='text-right'><?= $item['id'] ?></td>
+									<td class='text-right'><?= $item['price'] ?></td>
+									<td class='text-right'><?= $item['lowest_price'] ?></td>
+									<td class='text-right'><?= $item['stock'] ?></td>
+									<td class='text-right date-time'><?= $item['accurate'] ?></td>
+								</tr>
+
+							<?php
+								// else display most recent data that had values
+								}else{
+							?>
+
+								<tr class='text-danger font-weight-bold'>
+									<td><a href="<?= $item['link'] ?>" target="_blank"><i class="fas fa-external-link-alt"></i></a> <?= $item['name'] ?></td>
 									<td class='text-right'><?= $item['r_price'] ?></td>
 									<td class='text-right'><?= $item['lowest_price'] ?></td>
-									<td class='text-right date-time'><?= $item['lowest_price_at'] ?></td>
-									<td class='text-right'><?= $item['highest_price'] ?></td>
-									<td class='text-right date-time'><?= $item['highest_price_at'] ?></td>
 									<td class='text-right'><?= $item['r_stock'] ?></td>
 									<td class='text-right date-time'><?= $item['r_accurate'] ?></td>
 								</tr>
 
 							<?php
+								}
+							?>
 
+							<?php
 						}
-
 					?>
-
 			    </tbody>
 			</table>
 		

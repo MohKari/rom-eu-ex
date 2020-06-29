@@ -36,15 +36,26 @@ class Dev extends BaseController
 			->orderBy('created_at', 'DESC')
 			->first();
 
+			// lowest
 			$r3 = $prices_model->where('item_id', $item['id'])
 			->whereNotIn('price', [0])
 			->orderBy('price', 'ASC')
+			->orderBy('accurate_at', 'DESC')
 			->first();
+
+			// highest
+			$r4 = $prices_model->where('item_id', $item['id'])
+			->whereNotIn('price', [0])
+			->orderBy('price', 'DESC')
+			->orderBy('accurate_at', 'DESC')
+			->first();
+
 
 			// ddd($r3, false);
 			$data[] = [
 				'link' => 'https://europe.poporing.life/?search=:' . $item['name'],
 				'name' => $item['display_name'],
+				'id' => $item['id'],
 				'price' => number_format($r['price']),
 				'stock' => number_format($r['stock']),
 				'accurate' => $r['accurate_at'],
@@ -52,6 +63,9 @@ class Dev extends BaseController
 				'r_stock' => number_format($r2['stock']),
 				'r_accurate' => $r2['accurate_at'],
 				'lowest_price' => number_format($r3['price']),
+				'lowest_price_at' => $r3['accurate_at'],
+				'highest_price' => number_format($r4['price']),
+				'highest_price_at' => $r4['accurate_at'],
 			];
 
 		}
