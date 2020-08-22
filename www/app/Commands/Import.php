@@ -5,6 +5,7 @@ namespace App\Commands;
 use App\Models\CronJobLog;
 use App\Models\Items;
 use App\Models\StocksAndPrices;
+use App\Models\Summary;
 use App\Services\InternalAPICallService;
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
@@ -25,7 +26,7 @@ class Import extends BaseCommand
     /**
      * @var string
      */
-    protected $name        = 'import:blueprints';
+    protected $name        = 'import:all';
 
     /**
      * @var string
@@ -52,7 +53,10 @@ class Import extends BaseCommand
         // start curl
         $curl = curl_init();
 
-        $url = 'https://api-europe.poporing.life/get_all_latest_prices?includeCategory=:type_blueprint_all&mini=0';
+        // $url = 'https://api-europe.poporing.life/get_all_latest_prices?includeCategory=:type_blueprint_all&mini=0';
+
+        // get all items....
+        $url = 'https://api-europe.poporing.life/get_all_latest_prices';
 
         // set a bunch of curl options
         curl_setopt_array($curl, [
@@ -120,7 +124,7 @@ class Import extends BaseCommand
                     $stock = $item->data->volume;
 
                     // convert timestamp into datetime
-                    $time = Time::createFromTimestamp($item->data->timestamp);                    
+                    $time = Time::createFromTimestamp($item->data->timestamp);
                     $accurate_at = $time->toDateTimeString();
 
                     // replace _ with " "
@@ -134,7 +138,7 @@ class Import extends BaseCommand
                     if($id == false){
 
                         // create a new item in our db
-                        $item = new Item();
+                        $item = new Items();
                         $item->insert([
                             'name' => $name,
                             'display_name' => $display_name,
@@ -145,17 +149,39 @@ class Import extends BaseCommand
 
                     }
 
-                    $stocks_and_prices = new StocksAndPrices();
-                    $stocks_and_prices->insert([
+                    // data to be into DB
+                    $data = [
                         'item_id' => $id,
                         'price' => $price,
                         'stock' => $stock,
                         'accurate_at' => $accurate_at,
-                    ]);
+                    ];
+
+                    // add new entry to stocks and prices table
+                    $stocks_and_prices = new StocksAndPrices();
+                    $stocks_and_prices->insert($data);
+
+                    //////////////////////
+                    // populate summary //
+                    //////////////////////
+
+                    $summary = new Summary();
+                    $exists = $summary->where('item_id', $id)->first();
+                    if($exists == null){
+                        $summary->insert($data);
+                    }else{
+                        if($data['price'] != 0 && $data['stock'] != 0){
+                            $summary->where('item_id', $id)
+                                ->set($data)
+                                ->update();
+                        }
+                    }
+
+
 
                 }
 
-                // in the off chance there is no entry for an item we previous had... update the stock and price to 0                // 
+                // in the off chance there is no entry for an item we previous had... update the stock and price to 0                //
                 foreach($this->existing_items as $item){
 
                     $stocks_and_prices = new StocksAndPrices();
@@ -167,7 +193,7 @@ class Import extends BaseCommand
                     ]);
 
                 }
-               
+
             }
         }
 

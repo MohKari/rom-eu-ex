@@ -68,7 +68,9 @@
 
 	</div>
 </div>
-
+<div>
+	Data thanks to <a href="https://europe.poporing.life/">Poporing.Life</a>
+</div>
 </body>
 </html>
 

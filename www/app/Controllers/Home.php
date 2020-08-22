@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Controllers;
 
@@ -7,7 +7,7 @@ use App\Models\StocksAndPrices;
 
 class Home extends BaseController
 {
-	
+
 	public function index()
 	{
 
@@ -43,7 +43,7 @@ class Home extends BaseController
 				'accurate' => $r['accurate_at'],
 				'r_price' => number_format($r2['price']),
 				'r_stock' => number_format($r2['stock']),
-				'r_accurate' => $r2['accurate_at'],		
+				'r_accurate' => $r2['accurate_at'],
 			];
 
 		}

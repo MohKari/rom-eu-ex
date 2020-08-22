@@ -14,7 +14,7 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>
 
 	<!-- Include datatables -->
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">  
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
 	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
 
 	<!-- Font Awesome -->
@@ -33,51 +33,33 @@
 			<table id="main" class="table table-striped table-bordered">
 			    <thead>
 			        <tr>
+			            <th>Favourite</th>
 			            <th>Name</th>
-			            <th>Id</th>
 			            <th>Price</th>
-			            <th>Known Lowest</th>
-			            <th>Known Lowest At</th>
-			            <th>Known Highest</th>
-			            <th>Known Highest At</th>
 			            <th>Stock</th>
-			            <th>Last Known</th>
+			            <th>Data Age</th>
 			        </tr>
 			    </thead>
 			    <tbody>
-			    	
+
 		    		<?php
 
 		    			// loop through all items...
 						foreach($items as $item){
 
-							// if item has NEVER had stock, ignore it
-							if($item['r_stock'] == null || $item['r_stock'] == 0){
-								continue;
-							}
+							$link = 'https://europe.poporing.life/?search=:' . $item['name'];
 
-							// if item price is not 0, display current data
-							if($item['price'] != 0){
-
-								echo "<tr>";
-							// else display most recent data that had values
-							}else{
-
-								echo "<tr class='text-danger font-weight-bold'>";	
-
-							}						
+							$checked = in_array($item['id'], $favs) ? 'checked' : '';
+							$flag = in_array($item['id'], $favs) ? 1 : 0;
 
 							?>
 
-									<td><a href="<?= $item['link'] ?>" target="_blank"><i class="fas fa-external-link-alt"></i></a> <?= $item['name'] ?></td>
-									<td class='text-right'><?= $item['id'] ?></td>
-									<td class='text-right'><?= $item['r_price'] ?></td>
-									<td class='text-right'><?= $item['lowest_price'] ?></td>
-									<td class='text-right date-time'><?= $item['lowest_price_at'] ?></td>
-									<td class='text-right'><?= $item['highest_price'] ?></td>
-									<td class='text-right date-time'><?= $item['highest_price_at'] ?></td>
-									<td class='text-right'><?= $item['r_stock'] ?></td>
-									<td class='text-right date-time'><?= $item['r_accurate'] ?></td>
+								<tr>
+									<td class='text-right'><input <?= $checked; ?> type="checkbox" class="fav-selector" id="fav_<?= $item['id'] ?>" value="<?= $item['id'] ?>"><span id="span_id_<?= $item['id']; ?>"><?= $flag; ?><span></td>
+									<td><a href="<?= $link ?>" target="_blank"><i class="fas fa-external-link-alt"></i></a> <?= $item['display_name'] ?></td>
+									<td class='text-right'><?= number_format($item['price']) ?></td>
+									<td class='text-right'><?= number_format($item['stock']) ?></td>
+									<td class='text-right date-time'><?= $item['accurate_at'] ?></td>
 								</tr>
 
 							<?php
@@ -88,23 +70,43 @@
 
 			    </tbody>
 			</table>
-		
+
 		</div>
 
 	</div>
 </div>
-
+<div>
+	Data thanks to <a href="https://europe.poporing.life/">Poporing.Life</a>
+</div>
 </body>
 </html>
 
 <script>
-	
+
 	$(document).ready( function () {
         $('#main').DataTable({
         	"iDisplayLength" : 50,
-        	"order": [ 1, "asc" ]
+        	"order": [ 0, "desc" ],
+        	"oSearch": {"sSearch": "Blueprint"}
         });
     } );
+
+	// fav selected / unselected
+	$('.fav-selector').change(function() {
+		// on
+        if(this.checked) {
+        	$.ajax({
+			    url: "/fav/add/"+this.value,
+			});
+			    $("#span_id_"+this.value).html("1");
+        // off
+        }else{
+			$.ajax({
+			    url: "/fav/remove/"+this.value,
+			});
+			    $("#span_id_"+this.value).html("0");
+        }
+    });
 
 	$('.date-time').each(function( index ) {
 
@@ -121,11 +123,11 @@
 
 		var seconds = (now - date) / 1000
 
-		// var dhms = secondsToDhms(seconds);
+		var dhms = secondsToDhms(seconds);
 
 		$(this).html(string);
 		// $(this).html(seconds);
-		// $(this).html(dhms);
+		$(this).html(dhms);
 
 	});
 
@@ -136,13 +138,15 @@
 		var d = Math.floor(seconds / (3600*24));
 		var h = Math.floor(seconds % (3600*24) / 3600);
 		var m = Math.floor(seconds % 3600 / 60);
-		var s = Math.floor(seconds % 60);
+		// var s = Math.floor(seconds % 60);
 
 		var dDisplay = d > 0 ? d + (d == 1 ? "d" : "d") : "";
 		var hDisplay = h > 0 ? h + (h == 1 ? "h" : "h") : "";
 		var mDisplay = m > 0 ? m + (m == 1 ? "m" : "m") : "";
-		var sDisplay = s > 0 ? s + (s == 1 ? "s" : "s") : "";
-		return dDisplay + hDisplay + mDisplay + sDisplay;
+		// var sDisplay = s > 0 ? s + (s == 1 ? "s" : "s") : "";
+		// return dDisplay + hDisplay + mDisplay + sDisplay;
+
+		return dDisplay + hDisplay + mDisplay;
 
 	}
 

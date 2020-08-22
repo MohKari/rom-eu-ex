@@ -14,7 +14,7 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>
 
 	<!-- Include datatables -->
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">  
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
 	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
 
 	<!-- Font Awesome -->
@@ -52,14 +52,14 @@
 
 							// start to create some table rows
 							?>
-				
 
-							<?php 
+
+							<?php
 								// if item price is not 0, display current data
 								if($item['price'] != 0){
 							?>
 
-								<tr>	
+								<tr>
 									<td><a href="<?= $item['link'] ?>" target="_blank"><i class="fas fa-external-link-alt"></i></a> <?= $item['name'] ?></td>
 									<td class='text-right'><?= $item['price'] ?></td>
 									<td class='text-right'><?= $item['stock'] ?></td>
@@ -87,17 +87,19 @@
 					?>
 			    </tbody>
 			</table>
-		
+
 		</div>
 
 	</div>
 </div>
-
+<div>
+	Data thanks to <a href="https://europe.poporing.life/">Poporing.Life</a>
+</div>
 </body>
 </html>
 
 <script>
-	
+
 	$(document).ready( function () {
         $('#main').DataTable({
         	"iDisplayLength" : 50,
@@ -116,6 +118,6 @@
 
 	// function convertUTCDateToLocalDate(date) {
 	//     var newDate = new Date(date.getTime() - date.getTimezoneOffset()*60*1000);
-	//     return newDate;   
+	//     return newDate;
 	// }
 </script>

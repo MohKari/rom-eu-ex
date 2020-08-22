@@ -37,7 +37,11 @@ $routes->get('/cards/white', 'Cards::white');
 $routes->get('/cards/blue', 'Cards::blue');
 $routes->get('/cards/green', 'Cards::green');
 $routes->get('/cards/purple', 'Cards::purple');
-$routes->get('/test', 'Test::index');
+
+$routes->get('/fav/add/(:any)', 'Fav::add/$1');
+$routes->get('/fav/remove/(:any)', 'Fav::remove/$1');
+
+
 /**
  * --------------------------------------------------------------------
  * Additional Routing
