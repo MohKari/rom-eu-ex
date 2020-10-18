@@ -35,8 +35,10 @@
 			        <tr>
 			            <th>Favourite</th>
 			            <th>Name</th>
+			            <th>MinPrice</th>
 			            <th>Price</th>
 			            <th>Stock</th>
+			            <th>Buss?</th>
 			            <th>Data Age</th>
 			        </tr>
 			    </thead>
@@ -47,19 +49,31 @@
 		    			// loop through all items...
 						foreach($items as $item){
 
-							$link = 'https://europe.poporing.life/?search=:' . $item['name'];
+							if($item['MinPrice'] == 0 || $item['Enabled'] == 0){
+								continue;
+							}
 
-							$checked = in_array($item['id'], $favs) ? 'checked' : '';
-							$flag = in_array($item['id'], $favs) ? 1 : 0;
+							// $link = 'https://europe.poporing.life/?search=:' . $item['name'];
+
+							$checked = in_array($item['ItemId'], $favs) ? 'checked' : '';
+							$flag = in_array($item['ItemId'], $favs) ? 1 : 0;
+
+							if ($item['CurrentPrice'] == 0 || $item['CurrentPrice'] == 0){
+								$buss = "-";
+							}else{
+								$buss = round($item['CurrentPrice'] / $item['MinPrice'], 2);
+							}
 
 							?>
 
 								<tr>
-									<td class='text-right'><input <?= $checked; ?> type="checkbox" class="fav-selector" id="fav_<?= $item['id'] ?>" value="<?= $item['id'] ?>"><span id="span_id_<?= $item['id']; ?>"><?= $flag; ?><span></td>
-									<td><a href="<?= $link ?>" target="_blank"><i class="fas fa-external-link-alt"></i></a> <?= $item['display_name'] ?></td>
-									<td class='text-right'><?= number_format($item['price']) ?></td>
-									<td class='text-right'><?= number_format($item['stock']) ?></td>
-									<td class='text-right date-time'><?= $item['accurate_at'] ?></td>
+									<td class='text-right'><input <?= $checked; ?> type="checkbox" class="fav-selector" id="fav_<?= $item['ItemId'] ?>" value="<?= $item['ItemId'] ?>"><span id="span_id_<?= $item['ItemId']; ?>"><?= $flag; ?><span></td>
+									<td><?= $item['DisplayName'] ?></td>
+									<td class='text-right'><?= number_format($item['MinPrice']) ?></td>
+									<td class='text-right'><?= number_format($item['CurrentPrice']) ?></td>
+									<td class='text-right'> - </td>
+									<td class='text-right'><?= $buss ?></td>
+									<td class='text-right date-time'><?= $item['LastUpdate'] ?></td>
 								</tr>
 
 							<?php
@@ -76,7 +90,7 @@
 	</div>
 </div>
 <div>
-	Data thanks to <a href="https://europe.poporing.life/">Poporing.Life</a>
+	Data thanks to BORF!</a>
 </div>
 </body>
 </html>

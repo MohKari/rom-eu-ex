@@ -27,7 +27,7 @@ class Fav extends BaseController
 		// load cookie helper
 		helper('cookie');
 
-		$name = "mohkari_fav_rom_eu";
+		$name = "mohkari_fav_rom_eu_borf";
 
 		// get existing...
 		$data = get_cookie($name);
@@ -63,7 +63,7 @@ class Fav extends BaseController
 		// load cookie helper
 		helper('cookie');
 
-		$name = "mohkari_fav_rom_eu";
+		$name = "mohkari_fav_rom_eu_borf";
 
 		// get existing...
 		$data = get_cookie($name);

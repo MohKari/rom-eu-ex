@@ -40,6 +40,8 @@ class Cards extends BaseController
     private function getCards($url)
     {
 
+        die("no more cards, sorry");
+
         // start curl
         $curl = curl_init();
 

@@ -11,6 +11,8 @@ class Home extends BaseController
 	public function index()
 	{
 
+		die("no access for a bit");
+
 		// get all items
 		$items_model = new Items();
 		$items = $items_model->findAll();

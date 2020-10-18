@@ -10,7 +10,7 @@ class Dev extends BaseController
 
 		helper("cookie");
 
-		$favs = get_cookie("mohkari_fav_rom_eu");
+		$favs = get_cookie("mohkari_fav_rom_eu_borf");
 
 		if($favs != null){
 			$favs = json_decode($favs, true);
@@ -22,11 +22,7 @@ class Dev extends BaseController
 		$db = db_connect();
 
 		// query im going to run
-		$sql = "SELECT i.id, i.name, i.display_name, s.price, s.stock , s.accurate_at, s.created_at
-			FROM database.items as i
-			RIGHT JOIN database.summary as s
-			ON i.id = s.item_id
-			ORDER BY s.created_at DESC";
+		$sql = "SELECT * FROM Items WHERE Type = 'Blueprint'";
 
 		// run it
 		$query = $db->query($sql);
