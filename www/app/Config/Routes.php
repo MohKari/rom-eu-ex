@@ -33,11 +33,12 @@ $routes->setAutoRoute(true);
 $routes->get('/', 'Home::index');
 
 $routes->get('/dev', 'Dev::index');
-$routes->get('/cards/white', 'Cards::white');
-$routes->get('/cards/blue', 'Cards::blue');
-$routes->get('/cards/green', 'Cards::green');
-$routes->get('/cards/purple', 'Cards::purple');
 
+// exchange stuff
+$routes->get('/exchange', 'Exchange::index');
+$routes->get('/history/(:any)', 'History::index/$1');
+
+// favourites
 $routes->get('/fav/add/(:any)', 'Fav::add/$1');
 $routes->get('/fav/remove/(:any)', 'Fav::remove/$1');
 
